@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         btn_power.setOnClickListener{ pushOperator('^'); }
         btn_multiply.setOnClickListener{ pushOperator('*'); }
         btn_divide.setOnClickListener{ pushOperator('/'); }
+        btn_modulo.setOnClickListener{ pushOperator('%'); }
 
         btn_0.setOnClickListener{ numstack.push(0.0); refreshNumView() }
         btn_1.setOnClickListener{ numstack.push(1.0); refreshNumView() }
