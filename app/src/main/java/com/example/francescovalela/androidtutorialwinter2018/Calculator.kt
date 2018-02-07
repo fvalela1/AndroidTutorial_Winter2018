@@ -22,7 +22,7 @@ class Calculator {
     fun recalculate(): Double {
         if (formula.empty())
             return 0.0
-        else if (formula.peek().isOperand)
+        else if (!formula.peek().isOperand)
             formula.pop()
 
         var total = 0.0
@@ -35,12 +35,13 @@ class Calculator {
                 total += item.operand!!
             else {
                 when (mostRecentOperator) {
-                    '+' -> addition(total, item.operand!!)
-                    'x' -> multiply(total, item.operand!!)
-                    '/' -> divide(total, item.operand!!)
-                    '-' -> subtract(total, item.operand!!)
+                    '+' -> return addition(total, item.operand!!)
+                    '*' -> return multiply(total, item.operand!!)
+                    '/' -> return divide(total, item.operand!!)
+                    '-' -> return subtract(total, item.operand!!)
                     '√' -> return 0.0 //TODO does not work
-                    '%' -> mod(total, item.operand!!)
+                    '%' -> return mod(total, item.operand!!)
+                    '^' -> return power(total, item.operand!!)
                 }
             }
         }
@@ -77,6 +78,17 @@ class Calculator {
             return num1 % num2
         }
 
+        fun power(base: Double, exponent: Double): Double{
+            if(exponent <= 0.0) return 1.0
+            if(exponent == 1.0) return base
+            if(exponent == 2.0) return (base * base)
+
+            return if (base % 2.0 == 0.0)
+                power(power(base, exponent/2),2.0)
+            else
+                base*power(base, exponent - 1)
+
+        }
         fun sqrt(num1: Double): Double = num1 * (1/num1)
     }
 }
