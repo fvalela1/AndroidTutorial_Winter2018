@@ -34,11 +34,15 @@ class Calculator {
         var mostRecentOperator: Char? = null
 
         //TODO fix this up
+        //mostRecentOperator == null --> it's the first item to pass in.
+        //mostRecentOperator != null --> find out what it is
+        //mostRecentOperator ==
+        //1 - 1 + 1
         for (item in formula) {
-            if (mostRecentOperator == null)
-                total += item.operand!!
-            else if (!item.isOperand)
+            if (!item.isOperand)
                 mostRecentOperator = item.operator
+            else if (mostRecentOperator == null)
+                total += item.operand!!
             else {
                 when (mostRecentOperator) {
                     '+' -> addition(total, item.operand!!)
@@ -48,7 +52,6 @@ class Calculator {
                     '√' -> return 0.0 //TODO does not work
                     '%' -> mod(total, item.operand!!)
                 }
-                mostRecentOperator = null
             }
         }
         return total
@@ -66,16 +69,24 @@ class Calculator {
     }
 
     companion object Calculator {
-        fun addition(num1: Double = 0.0, num2: Double): Double = num1 + num2
+        fun addition(num1: Double, num2: Double): Double = num1 + num2
 
-        fun subtract(num1: Double = 0.0, num2: Double): Double = num1 - num2
+        fun subtract(num1: Double, num2: Double): Double = num1 - num2
 
-        fun multiply(num1: Double = 0.0, num2: Double): Double = num1 * num2
+        fun multiply(num1: Double, num2: Double): Double = num1 * num2
 
-        fun divide(num1: Double = 0.0, num2: Double): Double = num1 / num2
+        fun divide(num1: Double, num2: Double): Double {
+            if (num2 == 0.0)
+                return 0.0
+            return num1 / num2
+        }
 
-        fun mod(num1: Double = 0.0, num2: Double): Double = num1 % num2
+        fun mod(num1: Double, num2: Double): Double {
+            if (num2 == 0.0)
+                return 0.0 //Should actually return NaN
+            return num1 % num2
+        }
 
-        fun sqrt(num1: Double = 0.0): Double = num1 * (1/num1)
+        fun sqrt(num1: Double): Double = num1 * (1/num1)
     }
 }
