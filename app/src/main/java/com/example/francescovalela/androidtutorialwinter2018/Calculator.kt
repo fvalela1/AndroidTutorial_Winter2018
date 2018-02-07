@@ -14,6 +14,7 @@ class Calculator {
         if (!formula.peek().isOperand) {
             formula.pop()
             formula.push(FormulaItem(operator = operator))
+        }
     }
 
     fun recalculate(): Double {
