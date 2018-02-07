@@ -64,11 +64,12 @@ class MainActivity : AppCompatActivity() {
     private fun pushOperator(op: Char) {
         if (!digitStack.empty()) {
             val completeDigitValue = getDigitValueFromStack()
-            lastOperand = completeDigitValue
-            lastOperator = op
             calc.pushOperand(completeDigitValue)
+            lastOperand = calc.recalculate()
+            lastOperator = op
             calc.pushOperator(op)
             digitStack.clear()
+            refreshResultView(lastOperand ?: 0.0)
         } else if (lastOperand != null) {
             calc.pushOperator(op)
         }
@@ -115,6 +116,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun genericDigitListener(digit: Double){
+        if(lastOperator == null) {
+            calc.clear()
+            lastOperand = null
+        }
         digitStack.push(digit)
         refreshFormulaView()
     }
