@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
     private val calc = Calculator()
     private val digitStack: Stack<Double> = Stack()
     private var lastOperator: Char? = null
-    private var last: Double? = null
+    private var lastOperand: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         btn_clear.setOnClickListener {
             calc.clear()
             digitStack.clear()
-            last = null
+            lastOperand = null
             lastOperator = null
             refreshFormulaView()
             refreshResultView(calc.recalculate())
@@ -41,9 +41,22 @@ class MainActivity : AppCompatActivity() {
         if(!digitStack.empty()) {
             calc.pushOperand(getDigitValueFromStack())
             digitStack.clear()
-            refreshResultView(calc.recalculate())
-            last = calc.recalculate()
+            lastOperand = calc.recalculate()
+            refreshResultView(lastOperand ?: 0.0)
             lastOperator = null
+            refreshFormulaView()
+        }
+    }
+
+    private fun undoListener() {
+        if (digitStack.empty()) {
+            calc.undo()
+            lastOperator = null
+            lastOperand = calc.recalculate()
+            refreshFormulaView()
+            refreshResultView(lastOperand ?: 0.0)
+        } else {
+            digitStack.clear()
             refreshFormulaView()
         }
     }
@@ -51,12 +64,12 @@ class MainActivity : AppCompatActivity() {
     private fun pushOperator(op: Char) {
         if (!digitStack.empty()) {
             val completeDigitValue = getDigitValueFromStack()
-            last = completeDigitValue
+            lastOperand = completeDigitValue
             lastOperator = op
             calc.pushOperand(completeDigitValue)
             calc.pushOperator(op)
             digitStack.clear()
-        } else if (last != null) {
+        } else if (lastOperand != null) {
             calc.pushOperator(op)
         }
         lastOperator = op
@@ -79,14 +92,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         when {
-            lastOperator != null && last != null -> {
+            lastOperator != null && lastOperand != null -> {
                 val template = resources.getString(R.string.formula)
-                val tmp: Double = last ?: 0.0
+                val tmp: Double = lastOperand ?: 0.0
                 val previous = if (tmp - tmp.toLong() == 0.0)
                     tmp.toLong().toString() else tmp.toString()
                 formula.text = String.format(template, previous, lastOperator, curr)
             }
-            last != null -> formula.text = last.toString()
+            lastOperand != null -> {
+                val tmp: Double = lastOperand ?: 0.0
+                val cleanLast: String = if (tmp - tmp.toLong() == 0.0)
+                    tmp.toLong().toString() else tmp.toString()
+                formula.text = cleanLast
+            }
             else -> formula.text = curr
         }
     }
@@ -97,7 +115,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun genericDigitListener(digit: Double){
-        digitStack.push(digit);
+        digitStack.push(digit)
         refreshFormulaView()
     }
 
@@ -117,10 +135,10 @@ class MainActivity : AppCompatActivity() {
     private fun setOperatorListeners() {
         btn_plus.setOnClickListener{ pushOperator('+'); }
         btn_minus.setOnClickListener{ pushOperator('-'); }
-        btn_root.setOnClickListener{ pushOperator('√'); }
         btn_power.setOnClickListener{ pushOperator('^'); }
         btn_multiply.setOnClickListener{ pushOperator('*'); }
         btn_divide.setOnClickListener{ pushOperator('/'); }
         btn_modulo.setOnClickListener{ pushOperator('%'); }
+        btn_undo.setOnClickListener{ undoListener(); }
     }
 }
