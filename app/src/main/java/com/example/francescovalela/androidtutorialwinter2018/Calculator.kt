@@ -11,12 +11,9 @@ class Calculator {
     }
 
     fun pushOperator(operator: Char): Unit {
-        if (formula.isEmpty())
-            return //cannot start with operator
-        else if (!formula.peek().isOperand)
+        if (!formula.peek().isOperand) {
             formula.pop()
-
-        formula.push(FormulaItem(operator = operator))
+            formula.push(FormulaItem(operator = operator))
     }
 
     fun recalculate(): Double {
