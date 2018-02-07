@@ -1,24 +1,19 @@
 package com.example.francescovalela.androidtutorialwinter2018
 
-import java.util.*
+import java.util.Stack
 
 class Calculator {
 
     val formula: Stack<FormulaItem> = Stack()
 
     fun pushOperand(operand: Double): Unit {
-        if (formula.isEmpty())
-            return
-        else if (formula.peek().isOperand)
-            formula.pop()
-
-        formula.push(FormulaItem(operand))
+        formula.push(FormulaItem(operand = operand))
     }
 
     fun pushOperator(operator: Char): Unit {
         if (formula.isEmpty())
-            return
-        else if (formula.peek().isOperand)
+            return //cannot start with operator
+        else if (!formula.peek().isOperand)
             formula.pop()
 
         formula.push(FormulaItem(operator = operator))
@@ -33,11 +28,6 @@ class Calculator {
         var total = 0.0
         var mostRecentOperator: Char? = null
 
-        //TODO fix this up
-        //mostRecentOperator == null --> it's the first item to pass in.
-        //mostRecentOperator != null --> find out what it is
-        //mostRecentOperator ==
-        //1 - 1 + 1
         for (item in formula) {
             if (!item.isOperand)
                 mostRecentOperator = item.operator
@@ -77,13 +67,13 @@ class Calculator {
 
         fun divide(num1: Double, num2: Double): Double {
             if (num2 == 0.0)
-                return 0.0
+                return Double.NaN
             return num1 / num2
         }
 
         fun mod(num1: Double, num2: Double): Double {
             if (num2 == 0.0)
-                return 0.0 //Should actually return NaN
+                return Double.NaN
             return num1 % num2
         }
 
