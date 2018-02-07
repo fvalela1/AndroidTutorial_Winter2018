@@ -13,8 +13,8 @@ class Calculator {
     fun pushOperator(operator: Char): Unit {
         if (!formula.peek().isOperand) {
             formula.pop()
-            formula.push(FormulaItem(operator = operator))
         }
+        formula.push(FormulaItem(operator = operator))
     }
 
     fun recalculate(): Double {
@@ -33,13 +33,12 @@ class Calculator {
                 total += item.operand!!
             else {
                 when (mostRecentOperator) {
-                    '+' -> return addition(total, item.operand!!)
-                    '*' -> return multiply(total, item.operand!!)
-                    '/' -> return divide(total, item.operand!!)
-                    '-' -> return subtract(total, item.operand!!)
-                    '√' -> return 0.0 //TODO does not work
-                    '%' -> return mod(total, item.operand!!)
-                    '^' -> return power(total, item.operand!!)
+                    '+' -> total = addition(total, item.operand!!)
+                    '*' -> total = multiply(total, item.operand!!)
+                    '/' -> total = divide(total, item.operand!!)
+                    '-' -> total = subtract(total, item.operand!!)
+                    '%' -> total = mod(total, item.operand!!)
+                    '^' -> total = power(total, item.operand!!)
                 }
             }
         }
@@ -49,8 +48,13 @@ class Calculator {
 
     fun undo(): Unit {
         if (formula.peek().isOperand)
+            protectedFormulaPop()
+        protectedFormulaPop()
+    }
+
+    private fun protectedFormulaPop(): Unit {
+        if(!formula.empty())
             formula.pop()
-        formula.pop()
     }
 
     fun clear(): Unit {

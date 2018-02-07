@@ -19,7 +19,7 @@
         android:maxLines="1"
         android:paddingLeft="16dp"
         android:paddingRight="26dp"
-        android:textSize="18sp"/>
+        android:textSize="22sp"/>
 
     <TextView
         android:id="@+id/result"
@@ -31,7 +31,7 @@
         android:maxLines="1"
         android:paddingLeft="16dp"
         android:paddingRight="26dp"
-        android:textSize="28sp"
+        android:textSize="36sp"
         tools:text="0"/>
 
     <LinearLayout
@@ -50,20 +50,21 @@
             android:textAllCaps="false"/>
 
         <Button
+            android:id="@+id/btn_undo"
+            style="@style/CalculatorButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="undo"
+            android:textAllCaps="false"/>
+
+        <Button
             android:id="@+id/btn_power"
             style="@style/CalculatorButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="^"/>
-
-        <Button
-            android:id="@+id/btn_root"
-            style="@style/CalculatorButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="√"/>
 
         <Button
             android:id="@+id/btn_clear"
