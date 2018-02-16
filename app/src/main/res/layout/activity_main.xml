@@ -153,13 +153,15 @@
             android:layout_weight="1"
             android:text="6"/>
 
-        <Button
-            android:id="@+id/btn_multiply"
-            style="@style/CalculatorButton"
+        <!-- Multiply button should replace the following layout -->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="*"/>
+            android:layout_weight="1"/>
+
+        <!-- Replace code above -->
+
     </LinearLayout>
 
     <LinearLayout
