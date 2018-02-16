@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     private fun initializeListeners() {
         setOperatorListeners()
         setDigitListeners()
-        btn_clear.setOnClickListener { userInterfaceAdapter.clear() }
         btn_equals.setOnClickListener{ userInterfaceAdapter.equals() }
     }
 
@@ -48,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         btn_plus.setOnClickListener{ userInterfaceAdapter.pushOperator('+'); }
         btn_minus.setOnClickListener{ userInterfaceAdapter.pushOperator('-'); }
         btn_power.setOnClickListener{ userInterfaceAdapter.pushOperator('^'); }
-        btn_multiply.setOnClickListener{ userInterfaceAdapter.pushOperator('*'); }
         btn_divide.setOnClickListener{ userInterfaceAdapter.pushOperator('/'); }
         btn_modulo.setOnClickListener{ userInterfaceAdapter.pushOperator('%'); }
         btn_undo.setOnClickListener{ userInterfaceAdapter.undo(); }
