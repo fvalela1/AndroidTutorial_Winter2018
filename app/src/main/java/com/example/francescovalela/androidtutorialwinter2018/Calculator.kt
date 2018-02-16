@@ -4,19 +4,22 @@ import java.util.Stack
 
 class Calculator {
 
-    val formula: Stack<FormulaItem> = Stack()
+    private val formula: Stack<FormulaItem> = Stack()
 
-    fun pushOperand(operand: Double): Unit {
+    fun pushOperand(operand: Double) {
         formula.push(FormulaItem(operand = operand))
     }
 
-    fun pushOperator(operator: Char): Unit {
+    // Push an operator and pop the last formula element if it is an operator
+    // (can't have two operators one after the other)
+    fun pushOperator(operator: Char) {
         if (!formula.peek().isOperand) {
             formula.pop()
         }
         formula.push(FormulaItem(operator = operator))
     }
 
+    // Recalculate the entire contents of the stack.
     fun recalculate(): Double {
         if (formula.empty())
             return 0.0
@@ -45,22 +48,24 @@ class Calculator {
         return total
     }
 
-
-    fun undo(): Unit {
-        if (formula.peek().isOperand)
+    // Remove the last operation from the stack.
+    fun undo() {
+        if (!formula.empty() && formula.peek().isOperand)
             protectedFormulaPop()
         protectedFormulaPop()
     }
 
-    private fun protectedFormulaPop(): Unit {
+    private fun protectedFormulaPop() {
         if(!formula.empty())
             formula.pop()
     }
 
-    fun clear(): Unit {
+    fun clear() {
         formula.clear()
     }
 
+    // Objects are similar to singletons or static classes. This companion object shares the same
+    // name as its primary user, the Calculator class.
     companion object Calculator {
         fun addition(num1: Double, num2: Double): Double = num1 + num2
 
